@@ -1,7 +1,7 @@
 ## Test Container Sync Swift Setup
-#### Supporting vagrant scripts
-swift1 + keystone<br>
-swift2 + keystone<br>
+#### Environment
+swift1 + keystone on 172.16.0.221<br>
+swift2 + keystone on 172.16.0.222<br>
 ### Quick Start
 ```bash
 vagrant ssh swift1
