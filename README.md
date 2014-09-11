@@ -25,8 +25,14 @@ swift -V2.0 -A http://172.16.0.222:5000/v2.0 -U cookbook:admin -K openstack \
 # on '172.16.0.222' with key 'secret'
 swift post -t "http://172.16.0.222:8080/v1/${CONT2}/container2" -k 'secret' container1
 
+# Upload a test file to swift1:/container1
 dd if=/dev/zero of=/tmp/example-10M bs=1M count=10
 swift upload container1 /tmp/example-10M
 
+# Force a sync
+swift-init container-sync once
+
+# Check file exists on swift2:/container2
 swift -V2.0 -A http://swift2:5000/v2.0 -U cookbook:admin -K openstack stat container2
+swift -V2.0 -A http://swift2:5000/v2.0 -U cookbook:admin -K openstack list container2
 ```
