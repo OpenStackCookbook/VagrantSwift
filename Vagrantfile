@@ -8,8 +8,30 @@ nodes = {
 }
 
 Vagrant.configure("2") do |config|
-    config.vm.box = "precise64"
-    config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+    # Virtualbox
+    config.vm.box = "bunchc/trusty-x64"
+    config.vm.synced_folder ".", "/vagrant", type: "nfs"
+
+    # VMware Fusion / Workstation
+    config.vm.provider "vmware_fusion" or config.vm.provider "vmware_workstation" do |vmware, override|
+      override.vm.box = "bunchc/trusty-x64"
+      override.vm.synced_folder ".", "/vagrant", type: "nfs"
+
+      # Fusion Performance Hacks
+      vmware.vmx["logging"] = "FALSE"
+      vmware.vmx["MemTrimRate"] = "0"
+      vmware.vmx["MemAllowAutoScaleDown"] = "FALSE"
+      vmware.vmx["mainMem.backing"] = "swap"
+      vmware.vmx["sched.mem.pshare.enable"] = "FALSE"
+      vmware.vmx["snapshot.disabled"] = "TRUE"
+      vmware.vmx["isolation.tools.unity.disable"] = "TRUE"
+      vmware.vmx["unity.allowCompostingInGuest"] = "FALSE"
+      vmware.vmx["unity.enableLaunchMenu"] = "FALSE"
+      vmware.vmx["unity.showBadges"] = "FALSE"
+      vmware.vmx["unity.showBorders"] = "FALSE"
+      vmware.vmx["unity.wasCapable"] = "FALSE"
+      vmware.vmx["vhv.enable"] = "TRUE"
+    end
 
     #Default is 2200..something, but port 2200 is used by forescout NAC agent.
     config.vm.usable_port_range= 2800..2900 
